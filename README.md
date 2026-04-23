@@ -12,6 +12,11 @@ Aplicación full-stack para hacer seguimiento de Trabajos Prácticos (TPs) unive
 - **Búsqueda en tiempo real** — Filtrá tus TPs por título o descripción al instante.
 - **Seguimiento visual** — Barra de progreso en cada TP para ver cuánto falta para terminar.
 - **Ranking en Tiempo Real** — Leaderboard público que se actualiza cada segundo para ver quién completa más TPs.
+- **Temas Visuales** — Personalizá tu experiencia con temas como **Matrix, Neon, Synthwave y 90s**.
+- **Sistema Social** — Seguí a tus compañeros para estar al tanto de su progreso.
+- **Insignias de Verificación** — Identificá fácilmente a los creadores y usuarios oficiales con el tilde azul ✔️.
+- **Drag & Drop** — Cambiá el estado de tus TPs arrastrándolos a las zonas de acción.
+- **Notificaciones de Versión** — Enterate al instante cuando hay nuevas funcionalidades disponibles.
 - **Flujo de estados** — Cada TP avanza por: `Presentar` → `Entregar` → `Finalizado`.
 - **Dashboard con estadísticas** — Contadores en tiempo real por estado.
 - **Filtros** — Visualizá solo los TPs del estado que necesitás.

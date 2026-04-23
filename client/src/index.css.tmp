@@ -1,0 +1,116 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+  --primary: #6366f1;
+  --primary-light: #818cf8;
+  --primary-dark: #4f46e5;
+  --accent: #f43f5e;
+  --accent-light: #fb7185;
+  --success: #10b981;
+  --success-light: #34d399;
+  --warning: #f59e0b;
+  --warning-light: #fbbf24;
+  --bg-primary: #0a0a0f;
+  --bg-secondary: #12121a;
+  --bg-card: rgba(255, 255, 255, 0.03);
+  --bg-card-hover: rgba(255, 255, 255, 0.06);
+  --glass: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-strong: rgba(255, 255, 255, 0.08);
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --border: rgba(255, 255, 255, 0.06);
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --radius-xs: 6px;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --font-main: 'Inter', system-ui, sans-serif;
+}
+
+/* === Matrix Theme === */
+.theme-matrix {
+  --primary: #00ff41;
+  --primary-light: #00ff41;
+  --primary-dark: #003b00;
+  --accent: #ff0000;
+  --success: #00ff41;
+  --warning: #ffff00;
+  --bg-primary: #000000;
+  --bg-secondary: #050505;
+  --bg-card: rgba(0, 255, 65, 0.05);
+  --bg-card-hover: rgba(0, 255, 65, 0.1);
+  --glass: rgba(0, 255, 65, 0.05);
+  --glass-border: #00ff4133;
+  --text-primary: #00ff41;
+  --text-secondary: #008f11;
+  --text-muted: #003b00;
+  --border: #00ff4122;
+  --font-main: 'Courier New', monospace;
+  --radius: 0;
+}
+
+/* === Neon Theme === */
+.theme-neon {
+  --primary: #00f3ff;
+  --primary-light: #70f9ff;
+  --primary-dark: #00828a;
+  --accent: #ff00ff;
+  --success: #39ff14;
+  --warning: #fff01f;
+  --bg-primary: #050505;
+  --bg-secondary: #0d0d0d;
+  --bg-card: rgba(0, 243, 255, 0.05);
+  --bg-card-hover: rgba(0, 243, 255, 0.08);
+  --glass: rgba(255, 0, 255, 0.05);
+  --glass-border: #00f3ff44;
+  --text-primary: #ffffff;
+  --text-secondary: #00f3ff;
+  --text-muted: #700070;
+  --border: #ff00ff33;
+  --radius: 4px;
+}
+
+/* === Synthwave Theme === */
+.theme-synthwave {
+  --primary: #ff71ce;
+  --primary-light: #ff71ce;
+  --primary-dark: #b967ff;
+  --accent: #01cdfe;
+  --success: #05ffa1;
+  --warning: #fffb96;
+  --bg-primary: #2b0f54;
+  --bg-secondary: #1a0833;
+  --bg-card: rgba(255, 113, 206, 0.1);
+  --bg-card-hover: rgba(255, 113, 206, 0.15);
+  --glass: rgba(1, 205, 254, 0.1);
+  --glass-border: #ff71ce66;
+  --text-primary: #fff;
+  --text-secondary: #ff71ce;
+  --text-muted: #b967ff;
+  --border: #01cdfe44;
+}
+
+/* === 90s Retro Theme === */
+.theme-90s {
+  --primary: #000080;
+  --primary-light: #0000ff;
+  --primary-dark: #000040;
+  --accent: #800000;
+  --success: #008000;
+  --warning: #808000;
+  --bg-primary: #008080;
+  --bg-secondary: #c0c0c0;
+  --bg-card: #c0c0c0;
+  --bg-card-hover: #d0d0d0;
+  --glass: #c0c0c0;
+  --glass-border: #ffffff;
+  --text-primary: #000;
+  --text-secondary: #000080;
+  --text-muted: #808080;
+  --border: #808080;
+  --radius: 0;
+  --radius-sm: 0;
+}

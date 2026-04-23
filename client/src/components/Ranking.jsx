@@ -30,6 +30,22 @@ const Ranking = ({ token }) => {
     }
   }, [token]);
 
+  const handleFollow = async (userId) => {
+    try {
+      const { data } = await axios.post(`${API}/auth/follow/${userId}`, {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      // Actualizar localmente para feedback inmediato
+      setRanking(prev => prev.map(u => 
+        u._id === userId 
+          ? { ...u, isFollowing: data.isFollowing, followersCount: u.followersCount + (data.isFollowing ? 1 : -1) } 
+          : u
+      ));
+    } catch (err) {
+      console.error('Error following user:', err);
+    }
+  };
+
   // Fetch inicial + intervalo de 60s
   useEffect(() => {
     fetchRanking();
@@ -78,6 +94,7 @@ const Ranking = ({ token }) => {
             <span className="ranking-stat ranking-stat-info">📤</span>
             <span className="ranking-stat ranking-stat-ok">✅</span>
             <span className="ranking-total">Total</span>
+            <span className="ranking-action">Acción</span>
           </div>
 
           <AnimatePresence>
@@ -102,12 +119,26 @@ const Ranking = ({ token }) => {
                   }}>
                     {user.username[0].toUpperCase()}
                   </span>
-                  {user.username}
+                  <div className="user-name-wrapper">
+                    <div className="user-name-line">
+                      {user.username}
+                      {user.isVerified && <span className="verified-badge" title="Usuario Verificado">✔️</span>}
+                    </div>
+                    <span className="followers-count">{user.followersCount} seguidores</span>
+                  </div>
                 </span>
                 <span className="ranking-stat ranking-stat-warn">{user.presentar}</span>
                 <span className="ranking-stat ranking-stat-info">{user.entregar}</span>
                 <span className="ranking-stat ranking-stat-ok">{user.finalizado}</span>
                 <span className="ranking-total">{user.total}</span>
+                <div className="ranking-action">
+                  <button 
+                    onClick={() => handleFollow(user._id)}
+                    className={`btn btn-xs ${user.isFollowing ? 'btn-ghost' : 'btn-primary'}`}
+                  >
+                    {user.isFollowing ? 'Siguiendo' : '+ Seguir'}
+                  </button>
+                </div>
               </motion.div>
             ))}
           </AnimatePresence>

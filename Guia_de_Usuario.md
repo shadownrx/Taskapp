@@ -14,7 +14,25 @@ Al ingresar a la aplicación por primera vez, verás la pantalla de bienvenida.
 > [!TIP]
 > Tu sesión se mantendrá activa por 1 hora. Si expiró, la app te avisará para que vuelvas a ingresar.
 
+### 👤 Cambiar tu Nombre de Usuario
+¿Querés un nuevo alias?
+1. En el Dashboard, hacé clic sobre tu nombre actual (al lado del avatar).
+2. El nombre se convertirá en un campo de texto. Escribí tu nuevo nombre.
+3. Presioná **OK** o la tecla **Enter** para guardar.
+4. El cambio se reflejará instantáneamente en tu perfil y en el Ranking.
+
 ---
+
+### 🎨 Personalización de Temas
+TP Tracker te permite cambiar la apariencia completa de la app según tu estilo:
+1. En la parte superior, junto al logo, verás un selector de temas.
+2. Elegí entre:
+   - **✨ Default:** Diseño moderno de cristal.
+   - **🕶️ Matrix:** Estilo hacker en verde y negro.
+   - **🌃 Neon:** Contraste alto con luces de neón.
+   - **🌅 Synthwave:** Atardecer retro y morados.
+   - **💾 90s:** El estilo clásico de los primeros sistemas operativos.
+3. Tu preferencia se guardará automáticamente para tu próxima visita.
 
 ## 📋 2. El Dashboard (Panel Principal)
 
@@ -45,6 +63,12 @@ El flujo es cíclico:
 
 *La barra de progreso visual dentro de la tarjeta se actualizará automáticamente según el estado.*
 
+### 🖱️ Drag & Drop (Arrastrar y Soltar)
+¡Nueva forma rápida de organizar tus tareas!
+1. Mantené presionado y arrastrá cualquier tarjeta de TP.
+2. Verás que aparecen tres **Zonas de Acción** en la parte inferior de la pantalla.
+3. Soltá la tarjeta sobre la zona deseada (**Presentar**, **Entregar** o **Finalizado**) para cambiar su estado instantáneamente.
+
 ### 🔍 Búsqueda y Filtrado
 Si tenés muchos TPs, podés encontrarlos fácilmente:
 - **Buscador:** Escribí en el cuadro de búsqueda para filtrar por título o descripción en tiempo real.
@@ -59,7 +83,18 @@ Si te equivocaste o ya no necesitás un registro, hacé clic en el icono del tac
 
 En la parte inferior del Dashboard encontrarás el **Ranking en Tiempo Real**.
 - Aquí podés ver quiénes son los usuarios que más TPs han **Finalizado**.
-- El ranking se actualiza automáticamente cada segundo. ¡Competí con tus compañeros para ver quién es más productivo!
+- El ranking se actualiza automáticamente cada segundo.
+
+### 🤝 Sistema Social (Seguidores)
+¡Ahora podés interactuar con otros estudiantes!
+- En el **Ranking**, verás un botón de **+ Seguir** al lado de cada usuario.
+- Podés ver cuántos seguidores tiene cada uno debajo de su nombre.
+- Si seguís a alguien, el botón cambiará a "Siguiendo".
+
+### ✔️ Usuarios Verificados
+Para dar mayor seguridad y reconocimiento, hemos implementado tildes de verificación:
+- Los usuarios con el icono **✔️** azul al lado de su nombre son cuentas oficiales o creadores de la plataforma.
+- Esto te permite saber quiénes son los usuarios de confianza dentro del ranking.
 
 ---
 
@@ -70,6 +105,11 @@ La aplicación te dará feedback visual constante mediante notificaciones en la 
 - **Rojo:** Error (ej: "No se pudo conectar con el servidor").
 - **Azul:** Información (ej: "Estado cambiado").
 - **Amarillo:** Advertencia (ej: "Ponele un título al TP").
+
+### 🚀 Notificaciones de Nueva Versión
+TP Tracker evoluciona constantemente. Cuando implementemos una mejora importante, verás una notificación especial azul al iniciar sesión:
+> *"🚀 ¡Nueva versión disponible (v1.2.0)!"*
+Esto te asegura que siempre estés al tanto de las últimas herramientas disponibles para tu organización.
 
 ---
 

@@ -9,6 +9,9 @@ const API = import.meta.env.VITE_API_URL || '/api';
 const STATUSES = ['Presentar', 'Entregar', 'Finalizado'];
 const STATUS_ICONS = { Presentar: '📝', Entregar: '📤', Finalizado: '✅' };
 const STATUS_NEXT = { Presentar: 'Entregar', Entregar: 'Finalizado', Finalizado: 'Presentar' };
+const APP_VERSION = '1.2.0';
+const THEMES = ['default', 'matrix', 'neon', 'synthwave', '90s'];
+const THEME_ICONS = { default: '✨', matrix: '🕶️', neon: '🌃', synthwave: '🌅', '90s': '💾' };
 
 const Dashboard = ({ token, logout }) => {
   const toast = useToast();
@@ -18,7 +21,11 @@ const Dashboard = ({ token, logout }) => {
   const [creating, setCreating] = useState(false);
   const [newTp, setNewTp] = useState({ title: '', description: '' });
   const [searchTerm, setSearchTerm] = useState('');
-  const username = localStorage.getItem('username') || 'Usuario';
+  const [isDragging, setIsDragging] = useState(false);
+  const [editingUsername, setEditingUsername] = useState(false);
+  const [newUsername, setNewUsername] = useState(localStorage.getItem('username') || '');
+  const [username, setUsername] = useState(localStorage.getItem('username') || 'Usuario');
+  const [theme, setTheme] = useState(localStorage.getItem('app_theme') || 'default');
 
   const authHeaders = useCallback(() => ({
     headers: { Authorization: `Bearer ${token}` }
@@ -41,6 +48,18 @@ const Dashboard = ({ token, logout }) => {
   }, [authHeaders, logout, toast]);
 
   useEffect(() => { fetchTps(); }, [fetchTps]);
+
+  useEffect(() => {
+    const lastVersion = localStorage.getItem('app_version');
+    if (lastVersion !== APP_VERSION) {
+      setTimeout(() => {
+        toast.info(`🚀 ¡Nueva versión disponible (v${APP_VERSION})!`, {
+          description: 'Ahora podés arrastrar tus TPs para cambiar su estado.'
+        });
+        localStorage.setItem('app_version', APP_VERSION);
+      }, 1500);
+    }
+  }, [toast]);
 
   const handleCreate = async (e) => {
     e.preventDefault();
@@ -65,8 +84,10 @@ const Dashboard = ({ token, logout }) => {
     }
   };
 
-  const handleStatusChange = async (id, currentStatus) => {
-    const nextStatus = STATUS_NEXT[currentStatus];
+  const handleStatusChange = async (id, currentStatus, forcedStatus = null) => {
+    const nextStatus = forcedStatus || STATUS_NEXT[currentStatus];
+    if (nextStatus === currentStatus) return;
+    
     setTps(prev => prev.map(tp => tp._id === id ? { ...tp, status: nextStatus } : tp));
     try {
       await axios.put(`${API}/tps/${id}`, { status: nextStatus }, authHeaders());
@@ -90,6 +111,29 @@ const Dashboard = ({ token, logout }) => {
     }
   };
 
+  const handleUpdateUsername = async (e) => {
+    e.preventDefault();
+    if (!newUsername.trim() || newUsername.trim() === username) {
+      setEditingUsername(false);
+      return;
+    }
+    try {
+      await axios.put(`${API}/auth/username`, { newUsername: newUsername.trim() }, authHeaders());
+      localStorage.setItem('username', newUsername.trim());
+      setUsername(newUsername.trim());
+      setEditingUsername(false);
+      toast.success('Nombre de usuario actualizado');
+    } catch (err) {
+      toast.error(err.response?.data?.error || 'Error al actualizar nombre');
+    }
+  };
+
+  const handleThemeChange = (newTheme) => {
+    setTheme(newTheme);
+    localStorage.setItem('app_theme', newTheme);
+    toast.info(`Tema cambiado a "${newTheme}"`);
+  };
+
   const filteredTps = tps
     .filter(tp => filter === 'Todos' || tp.status === filter)
     .filter(tp => 
@@ -109,16 +153,47 @@ const Dashboard = ({ token, logout }) => {
   };
 
   return (
-    <div className="dashboard">
+    <div className={`dashboard ${theme !== 'default' ? `theme-${theme}` : ''}`}>
       {/* Header */}
       <header className="dashboard-header fade-up">
         <div className="brand">
           <div className="logo-sm">📋</div>
           <h1>TP Tracker</h1>
+          
+          <div className="theme-selector">
+            {THEMES.map(t => (
+              <button 
+                key={t}
+                className={`theme-btn ${theme === t ? 'active' : ''}`}
+                onClick={() => handleThemeChange(t)}
+                title={`Tema ${t}`}
+              >
+                {THEME_ICONS[t]}
+              </button>
+            ))}
+          </div>
         </div>
         <div className="user-info">
-          <div className="user-avatar">{username[0]}</div>
-          <span className="user-name">{username}</span>
+          {editingUsername ? (
+            <form onSubmit={handleUpdateUsername} className="edit-username-form">
+              <input
+                type="text"
+                value={newUsername}
+                onChange={(e) => setNewUsername(e.target.value)}
+                autoFocus
+                onBlur={() => !newUsername.trim() && setEditingUsername(false)}
+                className="edit-username-input"
+              />
+              <button type="submit" className="btn btn-primary btn-xs">OK</button>
+            </form>
+          ) : (
+            <>
+              <div className="user-avatar">{username[0]}</div>
+              <span className="user-name" onClick={() => setEditingUsername(true)} title="Clic para cambiar nombre">
+                {username} ✏️
+              </span>
+            </>
+          )}
           <button onClick={logout} className="btn btn-ghost btn-sm">Salir</button>
         </div>
       </header>
@@ -215,11 +290,31 @@ const Dashboard = ({ token, logout }) => {
               <motion.div
                 key={tp._id}
                 layout
+                drag
+                dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+                dragElastic={0.1}
+                dragSnapToOrigin
+                onDragStart={() => setIsDragging(true)}
+                onDragEnd={(e, info) => {
+                  setIsDragging(false);
+                  const y = info.point.y;
+                  const viewportHeight = window.innerHeight;
+                  // Si se suelta cerca del fondo (donde estarán las zonas)
+                  if (y > viewportHeight - 150) {
+                    const x = info.point.x;
+                    const width = window.innerWidth;
+                    if (x < width / 3) handleStatusChange(tp._id, tp.status, 'Presentar');
+                    else if (x < (width / 3) * 2) handleStatusChange(tp._id, tp.status, 'Entregar');
+                    else handleStatusChange(tp._id, tp.status, 'Finalizado');
+                  }
+                }}
                 initial={{ opacity: 0, y: 20, scale: 0.97 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
+                whileDrag={{ scale: 1.05, zIndex: 10, boxShadow: '0 20px 40px rgba(0,0,0,0.4)' }}
                 transition={{ duration: 0.3, delay: i * 0.05 }}
                 className="glass-card tp-card"
+                style={{ cursor: 'grab' }}
               >
                 <div className="tp-card-header">
                   <h3>{tp.title}</h3>
@@ -273,6 +368,22 @@ const Dashboard = ({ token, logout }) => {
 
       {/* Ranking */}
       <Ranking token={token} />
+
+      {/* Drag Drop Zones Overlay */}
+      <AnimatePresence>
+        {isDragging && (
+          <motion.div 
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 100 }}
+            className="drop-zones-overlay"
+          >
+            <div className="drop-zone drop-presentar"><span>📝</span> Mover a Presentar</div>
+            <div className="drop-zone drop-entregar"><span>📤</span> Mover a Entregar</div>
+            <div className="drop-zone drop-finalizado"><span>✅</span> Mover a Finalizado</div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

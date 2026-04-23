@@ -1,27 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
 const TP = require('../models/TP');
 const User = require('../models/User');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'supersecretkey';
 
-// Middleware to authenticate
-const auth = (req, res, next) => {
-    const authHeader = req.headers.authorization;
-    if (!authHeader) return res.status(401).json({ error: 'No autorizado' });
-    
-    const token = authHeader.split(' ')[1];
-    if (!token) return res.status(401).json({ error: 'No autorizado' });
-
-    try {
-        const decoded = jwt.verify(token, JWT_SECRET);
-        req.userId = decoded.userId;
-        next();
-    } catch (error) {
-        res.status(401).json({ error: 'Token inválido' });
-    }
-};
+const auth = require('../middleware/auth');
 
 router.get('/', auth, async (req, res) => {
     try {
@@ -85,6 +71,17 @@ router.delete('/:id', auth, async (req, res) => {
  */
 router.get('/ranking', async (req, res) => {
     try {
+        // Obtenemos el userId si está autenticado para marcar a quién sigue
+        const authHeader = req.headers.authorization;
+        let currentUserId = null;
+        if (authHeader) {
+            try {
+                const token = authHeader.split(' ')[1];
+                const decoded = jwt.verify(token, JWT_SECRET);
+                currentUserId = decoded.userId;
+            } catch (err) {}
+        }
+
         const ranking = await TP.aggregate([
             {
                 $group: {
@@ -114,8 +111,11 @@ router.get('/ranking', async (req, res) => {
             { $unwind: '$userInfo' },
             {
                 $project: {
-                    _id: 0,
+                    _id: '$userInfo._id',
                     username: '$userInfo.username',
+                    isVerified: '$userInfo.isVerified',
+                    followersCount: { $size: { $ifNull: ['$userInfo.followers', []] } },
+                    isFollowing: currentUserId ? { $in: [new mongoose.Types.ObjectId(currentUserId), { $ifNull: ['$userInfo.followers', []] }] } : { $literal: false },
                     total: 1,
                     presentar: 1,
                     entregar: 1,

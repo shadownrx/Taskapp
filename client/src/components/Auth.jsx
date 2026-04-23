@@ -70,60 +70,110 @@ const Auth = ({ setToken }) => {
   };
 
   return (
-    <div className="auth-page">
-      <div className="auth-card glass-card scale-in">
-        <div className="auth-logo">
-          <div className="logo-icon">📋</div>
-          <h1>TP Tracker</h1>
-          <p>{isLogin ? 'Ingresá a tu cuenta' : 'Creá tu cuenta nueva'}</p>
+    <div className="landing-container">
+      <div className="landing-content fade-up">
+        <div className="hero-section">
+          <div className="badge">v1.2.0 — ¡NUEVO DRAG & DROP! 🚀</div>
+          <h1 className="hero-title">
+            Domina tus <span className="text-gradient">Trabajos Prácticos</span>
+          </h1>
+          <p className="hero-subtitle">
+            La plataforma definitiva para estudiantes universitarios. Organizá tus entregas, 
+            personalizá tu entorno y competí sanamente con tus compañeros.
+          </p>
+          
+          <div className="features-grid">
+            <div className="feature-item">
+              <div className="feature-icon">📋</div>
+              <div>
+                <h3>Seguimiento Inteligente</h3>
+                <p>Flujo claro de estados: Presentar → Entregar → Finalizado.</p>
+              </div>
+            </div>
+            <div className="feature-item">
+              <div className="feature-icon">🎨</div>
+              <div>
+                <h3>Temas Inmersivos</h3>
+                <p>Cambiá el estilo con temas Matrix, Neon y Synthwave.</p>
+              </div>
+            </div>
+            <div className="feature-item">
+              <div className="feature-icon">🤝</div>
+              <div>
+                <h3>Comunidad Social</h3>
+                <p>Seguí a tus amigos y compará tu progreso en el ranking.</p>
+              </div>
+            </div>
+            <div className="feature-item">
+              <div className="feature-icon">📱</div>
+              <div>
+                <h3>Multi-dispositivo</h3>
+                <p>Accedé desde tu PC o celular con un diseño responsive premium.</p>
+              </div>
+            </div>
+          </div>
         </div>
 
-        {error && (
-          <div className="error-msg">
-            <span>⚠️</span> {error}
-          </div>
-        )}
+        <div className="landing-footer">
+          <p>© 2026 TP Tracker — Desarrollado para mentes productivas</p>
+        </div>
+      </div>
 
-        <form onSubmit={handleSubmit}>
-          <div className="input-group">
-            <label>Usuario</label>
-            <input
-              type="text"
-              placeholder="Tu nombre de usuario"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              autoComplete="username"
+      <div className="auth-section">
+        <div className="auth-card glass-card scale-in">
+          <div className="auth-logo">
+            <div className="logo-icon">📋</div>
+            <h1>{isLogin ? 'Bienvenido' : 'Unite a nosotros'}</h1>
+            <p>{isLogin ? 'Ingresá tus credenciales para continuar' : 'Completá los datos para crear tu cuenta'}</p>
+          </div>
+
+          {error && (
+            <div className="error-msg">
+              <span>⚠️</span> {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit}>
+            <div className="input-group">
+              <label>Usuario</label>
+              <input
+                type="text"
+                placeholder="Tu nombre de usuario"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                autoComplete="username"
+                disabled={loading}
+              />
+            </div>
+
+            <div className="input-group">
+              <label>Contraseña</label>
+              <input
+                type="password"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                autoComplete={isLogin ? 'current-password' : 'new-password'}
+                disabled={loading}
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="btn btn-primary"
+              style={{ width: '100%', marginTop: '8px' }}
               disabled={loading}
-            />
+            >
+              {loading ? <span className="spinner"></span> : (isLogin ? 'Iniciar Sesión' : 'Crear Cuenta')}
+            </button>
+          </form>
+
+          <div className="auth-toggle">
+            {isLogin ? '¿No tenés cuenta? ' : '¿Ya tenés cuenta? '}
+            <span onClick={switchMode}>
+              {isLogin ? 'Registrate gratis' : 'Iniciá sesión'}
+            </span>
           </div>
-
-          <div className="input-group">
-            <label>Contraseña</label>
-            <input
-              type="password"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              autoComplete={isLogin ? 'current-password' : 'new-password'}
-              disabled={loading}
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="btn btn-primary"
-            style={{ width: '100%', marginTop: '8px' }}
-            disabled={loading}
-          >
-            {loading ? <span className="spinner"></span> : (isLogin ? 'Iniciar Sesión' : 'Crear Cuenta')}
-          </button>
-        </form>
-
-        <div className="auth-toggle">
-          {isLogin ? '¿No tenés cuenta? ' : '¿Ya tenés cuenta? '}
-          <span onClick={switchMode}>
-            {isLogin ? 'Registrate' : 'Iniciá sesión'}
-          </span>
         </div>
       </div>
     </div>
