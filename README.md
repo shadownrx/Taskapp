@@ -2,6 +2,8 @@
 
 Aplicación full-stack para hacer seguimiento de Trabajos Prácticos (TPs) universitarios. Permite registrar, organizar y cambiar el estado de cada TP a través de un flujo claro: **Presentar → Entregar → Finalizado**.
 
+> 📖 **¿Sos nuevo?** Mirá la [Guía de Usuario](./Guia_de_Usuario.md) para aprender a usar la app.
+
 ---
 
 ## 📸 Características
